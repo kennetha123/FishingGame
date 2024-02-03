@@ -23,7 +23,7 @@ public:
 	inline size_t getPrice() { return price; }
 	inline void addAmount(size_t value) { amount += value; }
 	inline std::string getName() { return name; }
-	inline size_t getAmount() { return amount; }
+	inline int getAmount() { return amount; }
 private:
 	std::string name;
 	Color color;

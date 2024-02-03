@@ -12,7 +12,7 @@ public:
 	inline size_t getGold() { return gold; }
 	void addBait(size_t index, size_t amount);
 	inline size_t getBaitPrice(size_t index) { return baits[index].getPrice(); }
-	inline size_t getBaitAmount(size_t index) { return baits[index].getAmount(); }
+	inline int getBaitAmount(size_t index) { return baits[index].getAmount(); }
 	inline std::string getBaitName(size_t index) { return baits[index].getName(); }
 	inline size_t getBaitSize() { return baits.size(); }
 	void setActivePole(std::shared_ptr<Pole> pole);

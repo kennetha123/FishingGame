@@ -9,8 +9,8 @@ size_t Utils::randomize(int min, int max)
 		return min;
 	}
 
-	std::random_device rd;
-	std::mt19937 gen(rd());
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
 	std::uniform_int_distribution<> distribution(min, max);
 
 	return distribution(gen);

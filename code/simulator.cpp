@@ -2,6 +2,8 @@
 #include "dialogue.h"
 #include "utils.h"
 #include <cmath>
+#include <algorithm>
+
 void Simulator::generateFishToday()
 {
 	fishes_prize.emplace_back(Fish(Color::red, Size::small, 1, 5));
@@ -19,8 +21,9 @@ void Simulator::generateFishToday()
 
 void Simulator::generateFishForecast(int fish_min, int fish_max)
 {
-	// generate number of fish in size
 	const int total_fish = Utils::randomize(fish_min, fish_max);
+
+	// generate number of fish in size
 	int temp_fish = total_fish;
 	small_fish = Utils::randomize(fish_min, temp_fish);
 	temp_fish -= small_fish;
@@ -39,7 +42,7 @@ void Simulator::generateFishForecast(int fish_min, int fish_max)
 	green_fish = temp_color;
 	green_percent = Utils::percentage(green_fish, total_fish);
 
-	Dialogue::print("Today, we're seeing ", small_fish, " small fish,", medium_fish, " medium fish,", big_fish, " big fish.");
+	Dialogue::print("Today, we're seeing ", small_fish, " small fish, ", medium_fish, " medium fish, ", big_fish, " big fish.");
 	Dialogue::print(red_percent, "% are red, ", blue_percent, "% are blue, ", green_percent, "% are green.");
 }
 
@@ -48,58 +51,59 @@ void Simulator::generateResult()
 	Dialogue::print("Generating the day...");
 
 	int starting_index = 0;
-	int fish_used = 0;
+	int fish_size_in_pool = 0;
 	switch (inventory.getActivePole()->getPoleSize())
 	{
 	case Size::small:
 		starting_index = 0;
-		fish_used = small_fish;
+		fish_size_in_pool = small_fish;
+		break;
 	case Size::medium:
 		starting_index = 3;
-		fish_used = medium_fish;
+		fish_size_in_pool = medium_fish;
+		break;
 	case Size::big:
 		starting_index = 6;
-		fish_used = big_fish;
+		fish_size_in_pool = big_fish;
+		break;
 	}
+	Dialogue::print("red : ",red_percent, "| blue : ", blue_percent, "| green : ", green_percent);
+	Dialogue::print("Fish in the pool : ", fish_size_in_pool);
+
+	std::vector<float> percentages = { red_percent, blue_percent, green_percent };
 
 	for (size_t i = 0; i < inventory.getBaitSize(); i++)
 	{
 		int gold_prize = 0;
 		int fish_caught = 0;
-		float percent = 0;
-
-		switch (i)
-		{
-		case 2:
-			percent = green_percent;
-		case 1:
-			percent = blue_percent;
-		case 0:
-			percent = red_percent;
-		}
+		float percent = percentages[i];
 
 		Dialogue::print(inventory.getBaitName(i), " amount : ", inventory.getBaitAmount(i));
 		int fish_price = fishes_prize[starting_index + i].getPrice();
 		if (inventory.getBaitAmount(i) > 0)
 		{
-
-			int fish_exist = std::round(fish_used * (percent / 100));
-			if (inventory.getBaitAmount(i) > fish_exist)
-			{
-				fish_caught = fish_exist;
-				gold_prize += fish_exist * fish_price;
-			}
-			else
-			{
-				fish_caught = inventory.getBaitAmount(i);
-				gold_prize += inventory.getBaitAmount(i) * fish_price;
-			}
+			int fish_exist = std::round(fish_size_in_pool * (percent / 100));
+			fish_caught = std::min(inventory.getBaitAmount(i), fish_exist);
+			gold_prize = fish_caught * fish_price;
+			inventory.addGold(gold_prize);
 		}
 
-		inventory.addGold(gold_prize);
 		Dialogue::print("You got ", fish_caught, " ", inventory.getBaitName(i), " fish caught with price ", fish_price, " and you got total of : ", gold_prize, " gold!");
 	}
 
 	Dialogue::print("Money : ", inventory.getGold());
+
+	if (inventory.getGold() > 100)
+	{
+		Dialogue::print("Congratulation, YOU WIN!");
+	}
+	else if (inventory.getGold() < 100)
+	{
+		Dialogue::print("Unfortunately, YOU LOSE...");
+	}
+	else
+	{
+		Dialogue::print("You still have to work hard.");
+	}
 }
 
