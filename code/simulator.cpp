@@ -1,22 +1,23 @@
 #include "simulator.h"
 #include "dialogue.h"
 #include "utils.h"
+#include "game_config.h"
 #include <cmath>
 #include <algorithm>
 
 void Simulator::generateFishToday()
 {
-	fishes_prize.emplace_back(Fish(Color::red, Size::small, 1, 5));
-	fishes_prize.emplace_back(Fish(Color::blue, Size::small, 3, 5));
-	fishes_prize.emplace_back(Fish(Color::green, Size::small, 5));
+	fishes_prize.emplace_back(Fish(Color::red, Size::small, Config::getInstance().RED_SMALL_PRICE[0], Config::getInstance().RED_SMALL_PRICE[1]));
+	fishes_prize.emplace_back(Fish(Color::blue, Size::small, Config::getInstance().BLUE_SMALL_PRICE[0], Config::getInstance().BLUE_SMALL_PRICE[1]));
+	fishes_prize.emplace_back(Fish(Color::green, Size::small, Config::getInstance().GREEN_SMALL_PRICE[0]));
 
-	fishes_prize.emplace_back(Fish(Color::red, Size::medium, 5, 10));
-	fishes_prize.emplace_back(Fish(Color::blue, Size::medium, 8, 10));
-	fishes_prize.emplace_back(Fish(Color::green, Size::medium, 10));
+	fishes_prize.emplace_back(Fish(Color::red, Size::medium, Config::getInstance().RED_MED_PRICE[0], Config::getInstance().RED_MED_PRICE[1]));
+	fishes_prize.emplace_back(Fish(Color::blue, Size::medium, Config::getInstance().BLUE_MED_PRICE[0], Config::getInstance().BLUE_MED_PRICE[1]));
+	fishes_prize.emplace_back(Fish(Color::green, Size::medium, Config::getInstance().GREEN_MED_PRICE[0]));
 
-	fishes_prize.emplace_back(Fish(Color::red, Size::big, 10, 15));
-	fishes_prize.emplace_back(Fish(Color::blue, Size::big, 13, 15));
-	fishes_prize.emplace_back(Fish(Color::green, Size::big, 15));
+	fishes_prize.emplace_back(Fish(Color::red, Size::big, Config::getInstance().RED_BIG_PRICE[0], Config::getInstance().RED_BIG_PRICE[1]));
+	fishes_prize.emplace_back(Fish(Color::blue, Size::big, Config::getInstance().BLUE_BIG_PRICE[0], Config::getInstance().BLUE_BIG_PRICE[1]));
+	fishes_prize.emplace_back(Fish(Color::green, Size::big, Config::getInstance().GREEN_BIG_PRICE[0]));
 }
 
 void Simulator::generateFishForecast(int fish_min, int fish_max)
@@ -34,16 +35,18 @@ void Simulator::generateFishForecast(int fish_min, int fish_max)
 	// generate number of fish in color
 	float temp_color = total_fish;
 	red_fish = Utils::randomize(fish_min, temp_color);
-	red_percent = Utils::percentage(red_fish, total_fish);
+	float red_percent = Utils::percentage(red_fish, total_fish);
 	temp_color -= red_fish;
 	blue_fish = Utils::randomize(fish_min, temp_color);
-	blue_percent = Utils::percentage(blue_fish, total_fish);
+	float blue_percent = Utils::percentage(blue_fish, total_fish);
 	temp_color -= blue_fish;
 	green_fish = temp_color;
-	green_percent = Utils::percentage(green_fish, total_fish);
+	float green_percent = Utils::percentage(green_fish, total_fish);
 
 	Dialogue::print("Today, we're seeing ", small_fish, " small fish, ", medium_fish, " medium fish, ", big_fish, " big fish.");
 	Dialogue::print(red_percent, "% are red, ", blue_percent, "% are blue, ", green_percent, "% are green.");
+
+	percentages = { red_percent, blue_percent, green_percent };
 }
 
 void Simulator::generateResult()
@@ -67,10 +70,11 @@ void Simulator::generateResult()
 		fish_size_in_pool = big_fish;
 		break;
 	}
-	Dialogue::print("red : ",red_percent, "| blue : ", blue_percent, "| green : ", green_percent);
-	Dialogue::print("Fish in the pool : ", fish_size_in_pool);
 
-	std::vector<float> percentages = { red_percent, blue_percent, green_percent };
+#ifdef GAME_DEBUG
+	Dialogue::print("red : ", percentages[0], "% | blue : ", percentages[1], "% | green : ", percentages[2], "%");
+	Dialogue::print("Fish in the pool : ", fish_size_in_pool);
+#endif
 
 	for (size_t i = 0; i < inventory.getBaitSize(); i++)
 	{

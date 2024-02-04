@@ -2,6 +2,7 @@
 #include "inventory.h"
 #include "dialogue.h"
 #include "simulator.h"
+#include "game_config.h"
 
 void clearConsole()
 {
@@ -15,19 +16,21 @@ void clearConsole()
 int main()
 {
     std::string answer;
+
     Inventory inventory;
     Shop shop(inventory);
     Simulator simulator(inventory);
-    inventory.addGold(100);
+
+    inventory.addGold(Config::getInstance().STARTING_GOLD);
     int day = 1;
 
-    while (inventory.getGold() >= 100)
+    while (inventory.getGold() >= Config::getInstance().GOLD_GOAL)
     {
         Dialogue::print(" ");
         Dialogue::print("DAY ", day);
         Dialogue::print(" ");
         simulator.generateFishToday();
-        simulator.generateFishForecast(1, 100);
+        simulator.generateFishForecast(Config::getInstance().MIN_FISH_TODAY, Config::getInstance().MAX_FISH_TODAY);
         Dialogue::print("Good morning Player! Rent your fishing pole!");
         Dialogue::print("Money : ", inventory.getGold());
         Dialogue::print("Answer with number : ");

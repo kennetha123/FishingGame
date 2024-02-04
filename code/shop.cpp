@@ -1,5 +1,13 @@
 #include "shop.h"
 #include "dialogue.h"
+#include "game_config.h"
+
+Shop::Shop(Inventory& inventory) : inventory(inventory), poles
+{
+	Pole(Size::small, "Small Fishing Pole", Config::getInstance().SMALL_POLE),
+	Pole(Size::medium, "Medium Fishing Pole", Config::getInstance().MEDIUM_POLE),
+	Pole(Size::big, "Big Fishing Pole", Config::getInstance().BIG_POLE)
+} {}
 
 void Shop::rentPole(Pole& pole)
 {

@@ -1,0 +1,31 @@
+{
+  "Economy": {
+    "STARTING_GOLD": 100,
+    "GOLD_GOAL": 100
+  },
+  "Fishing": {
+    "MIN_FISH_TODAY": 1,
+    "MAX_FISH_TODAY": 10
+  },
+  "Price": {
+    "RED_SMALL_PRICE": [ 1, 5 ],
+    "RED_MED_PRICE": [ 5, 10 ],
+    "RED_BIG_PRICE": [ 10, 15 ],
+    "BLUE_SMALL_PRICE": [ 3, 5 ],
+    "BLUE_MED_PRICE": [ 8, 10 ],
+    "BLUE_BIG_PRICE": [ 13, 15 ],
+    "GREEN_SMALL_PRICE": [ 5, 5 ],
+    "GREEN_MED_PRICE": [ 10, 10 ],
+    "GREEN_BIG_PRICE": [ 15, 15 ]
+  },
+  "Pole": {
+    "SMALL_POLE": 5,
+    "MEDIUM_POLE": 10,
+    "BIG_POLE":  15
+  },
+  "Bait": {
+    "RED_BAIT": 1,
+    "BLUE_BAIT": 2,
+    "GREEN_BAIT": 3
+  }
+}

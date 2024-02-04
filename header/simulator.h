@@ -19,7 +19,5 @@ private:
 	int red_fish = 0;
 	int blue_fish = 0;
 	int green_fish = 0;
-	float red_percent = 0.0f;
-	float blue_percent = 0.0f;
-	float green_percent = 0.0f;
+	std::vector<float> percentages;
 };

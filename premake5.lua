@@ -33,7 +33,8 @@ project "game"
 	
 	includedirs
 	{
-		"header"
+		"header",
+		"dependency/json"
 	}
 		
 	filter "system:windows"

@@ -7,12 +7,7 @@
 class Shop
 {
 public:
-	Shop(Inventory& inventory) : inventory(inventory), poles
-	{
-		Pole(Size::small, "Small Fishing Pole", 5),
-		Pole(Size::medium, "Medium Fishing Pole", 10),
-		Pole(Size::big, "Big Fishing Pole", 15)
-	} {}
+	Shop(Inventory& inventory);
 	void rentPole(Pole& pole);
 	void buyBait(size_t index, size_t amount);
 	void showPoleOption();

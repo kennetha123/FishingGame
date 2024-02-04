@@ -1,10 +1,11 @@
 #include "inventory.h"
+#include "game_config.h"
 
 Inventory::Inventory() : baits
 {
-	Bait(Color::red, "Red", 1),
-	Bait(Color::blue, "Blue", 2),
-	Bait(Color::green, "Green", 3)
+	Bait(Color::red, "Red", Config::getInstance().RED_BAIT),
+	Bait(Color::blue, "Blue", Config::getInstance().BLUE_BAIT),
+	Bait(Color::green, "Green", Config::getInstance().GREEN_BAIT)
 }
 {}
 
