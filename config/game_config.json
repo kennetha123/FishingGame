@@ -5,7 +5,7 @@
   },
   "Fishing": {
     "MIN_FISH_TODAY": 1,
-    "MAX_FISH_TODAY": 10
+    "MAX_FISH_TODAY": 100
   },
   "Price": {
     "RED_SMALL_PRICE": [ 1, 5 ],

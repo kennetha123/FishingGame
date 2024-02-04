@@ -24,23 +24,40 @@ void Simulator::generateFishForecast(int fish_min, int fish_max)
 {
 	const int total_fish = Utils::randomize(fish_min, fish_max);
 
-	// generate number of fish in size
-	int temp_fish = total_fish;
-	small_fish = Utils::randomize(fish_min, temp_fish);
-	temp_fish -= small_fish;
-	medium_fish = Utils::randomize(fish_min, temp_fish);
-	temp_fish -= medium_fish;
-	big_fish = temp_fish;
+	// if size too small, assign all to small fish.
+	if (total_fish <= 2) {
+		small_fish = total_fish;
+		medium_fish = 0;
+		big_fish = 0;
+	}
+	else {
+		// generate number of fish in size
+		int temp_fish = total_fish;
+		small_fish = Utils::randomize(fish_min, std::max(fish_min, temp_fish - 2));
+		temp_fish -= small_fish;
+		medium_fish = Utils::randomize(fish_min, std::max(fish_min, temp_fish - 1));
+		temp_fish -= medium_fish;
+		big_fish = temp_fish;
+	}
 
 	// generate number of fish in color
 	float temp_color = total_fish;
-	red_fish = Utils::randomize(fish_min, temp_color);
+	if (total_fish <= 2) {
+		red_fish = Utils::randomize(fish_min, std::max(fish_min, (int)temp_color - 1));
+		temp_color -= red_fish;
+		blue_fish = 0;
+		green_fish = temp_color;
+	}
+	else {
+		red_fish = Utils::randomize(fish_min, std::max(fish_min, (int)temp_color - 2));
+		temp_color -= red_fish;
+		blue_fish = Utils::randomize(fish_min, std::max(fish_min, (int)temp_color - 1));
+		temp_color -= blue_fish;
+		green_fish = temp_color;
+	}
+
 	float red_percent = Utils::percentage(red_fish, total_fish);
-	temp_color -= red_fish;
-	blue_fish = Utils::randomize(fish_min, temp_color);
 	float blue_percent = Utils::percentage(blue_fish, total_fish);
-	temp_color -= blue_fish;
-	green_fish = temp_color;
 	float green_percent = Utils::percentage(green_fish, total_fish);
 
 	Dialogue::print("Today, we're seeing ", small_fish, " small fish, ", medium_fish, " medium fish, ", big_fish, " big fish.");
